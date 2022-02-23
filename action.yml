@@ -1,8 +1,8 @@
-name: "Node VPS Deployment"
-description: "Deploy a Node application to a VPS with SSH and PM2 installed and running"
+name: "PM2 Deployment"
+description: "Deploy a Node application to a remote server with SSH and PM2 installed and running"
 branding:
-  icon: "arrow-up-circle"
-  color: "purple"
+  icon: "layers"
+  color: "yellow"
 
 inputs:
   remote-path:
@@ -29,6 +29,10 @@ inputs:
     description: "Do you want to use yarn?"
     required: true
     default: false
+  build:
+    description: "Do you want to build your typescript code?"
+    required: false
+    default: false
   pm2-id:
       description: "PM2 ID or Name of the process"
       required: true
@@ -36,7 +40,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     
     - name: Copy repository contents
       uses: appleboy/scp-action@f57f59fba9f7f05a7857eeb06d556738cc696279
@@ -68,6 +72,16 @@ runs:
         PORT: ${{ inputs.port }}
         PASSWORD: ${{ inputs.password }}
         script: cd ${{ inputs.remote-path }} && yarn install
+
+    - name: Build your project
+      if: ${{ inputs.build == true }}
+      uses: appleboy/ssh-action@1a8b3784eaa665f677fa114edd5683bb6a6bfaa8
+      with:
+        HOST: ${{ inputs.host }}
+        USERNAME: ${{ inputs.username }}
+        PORT: ${{ inputs.port }}
+        PASSWORD: ${{ inputs.password }}
+        script: cd ${{ inputs.remote-path }} && npm run build
         
     - name: Restart remote application
       uses: appleboy/ssh-action@1a8b3784eaa665f677fa114edd5683bb6a6bfaa8

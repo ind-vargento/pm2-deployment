@@ -8,7 +8,7 @@ steps:
   - uses: actions/checkout@v2
   
   - name: Deploy to Staging
-    uses: Techie-Pi/node-vps-deployment@main
+    uses: ind-vargento/pm2-deployment@main
     with:
       remote-path: "~/deployment/staging"
       host: 123.123.123.123
@@ -32,6 +32,7 @@ The action does the following:
 - ``port`` - What's the port of SSH? (default: ``22``)
 - ``password`` - What's the password of the user?`` (Note: in the future SSH Keys will be supported)
 - ``automatic-pre-deploy`` - Should deploy automatically (default ``true``)
+- ``build`` - Build your Typescript project (default ``false``)
 - ``yarn`` - Use yarn instead of npm (default ``false``)
 - ``pm2-id`` - What's the ID/Name of the PM2 application?
 
