@@ -42,48 +42,38 @@ runs:
   steps:
     - uses: actions/checkout@v2
 
-    # - name: Copy repository contents
-    #   uses: appleboy/scp-action@f57f59fba9f7f05a7857eeb06d556738cc696279
-    #   env:
-    #     HOST: ${{ inputs.host }}
-    #     USERNAME: ${{ inputs.username }}
-    #     PORT: ${{ inputs.port }}
-    #     PASSWORD: ${{ inputs.password }}
-    #   with:
-    #     source: "."
-    #     target: ${{ inputs.remote-path }}
+    - name: Copy repository contents
+      uses: appleboy/scp-action@f57f59fba9f7f05a7857eeb06d556738cc696279
+      env:
+        HOST: ${{ inputs.host }}
+        USERNAME: ${{ inputs.username }}
+        PORT: ${{ inputs.port }}
+        PASSWORD: ${{ inputs.password }}
+      with:
+        source: "."
+        target: ${{ inputs.remote-path }}
 
-    # - name: Run npm clean-install
-    #   if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == false }}
-    #   uses: ind-vargento/ssh-action@master
-    #   with:
-    #     HOST: ${{ inputs.host }}
-    #     USERNAME: ${{ inputs.username }}
-    #     PORT: ${{ inputs.port }}
-    #     PASSWORD: ${{ inputs.password }}
-    #     script: cd ${{ inputs.remote-path }} && npm ci
+    - name: Run npm clean-install
+      if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == false }}
+      uses: ind-vargento/ssh-action@master
+      with:
+        HOST: ${{ inputs.host }}
+        USERNAME: ${{ inputs.username }}
+        PORT: ${{ inputs.port }}
+        PASSWORD: ${{ inputs.password }}
+        script: cd ${{ inputs.remote-path }} && npm ci
 
-    # - name: Run yarn install
-    #   if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == true }}
-    #   uses: ind-vargento/ssh-action@master
-    #   with:
-    #     HOST: ${{ inputs.host }}
-    #     USERNAME: ${{ inputs.username }}
-    #     PORT: ${{ inputs.port }}
-    #     PASSWORD: ${{ inputs.password }}
-    #     script: cd ${{ inputs.remote-path }} && yarn install
+    - name: Run yarn install
+      if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == true }}
+      uses: ind-vargento/ssh-action@master
+      with:
+        HOST: ${{ inputs.host }}
+        USERNAME: ${{ inputs.username }}
+        PORT: ${{ inputs.port }}
+        PASSWORD: ${{ inputs.password }}
+        script: cd ${{ inputs.remote-path }} && yarn install
 
-    # - name: Build your project
-    #   if: ${{ inputs.build == true }}
-    #   uses: ind-vargento/ssh-action@master
-    #   with:
-    #     HOST: ${{ inputs.host }}
-    #     USERNAME: ${{ inputs.username }}
-    #     PORT: ${{ inputs.port }}
-    #     PASSWORD: ${{ inputs.password }}
-    #     script: cd ${{ inputs.remote-path }} && npm run build
-
-    - name: Build your projectfff
+    - name: Build your project
       if: ${{ inputs.build == true }}
       uses: ind-vargento/ssh-action@master
       with:
@@ -91,13 +81,13 @@ runs:
         USERNAME: ${{ inputs.username }}
         PORT: ${{ inputs.port }}
         PASSWORD: ${{ inputs.password }}
-        script: hostaaa=$(hostname) && echo $hostaaa
+        script: cd ${{ inputs.remote-path }} && npm run build
 
-    # - name: Restart remote application
-    #   uses: ind-vargento/ssh-action@master
-    #   with:
-    #     HOST: ${{ inputs.host }}
-    #     USERNAME: ${{ inputs.username }}
-    #     PORT: ${{ inputs.port }}
-    #     PASSWORD: ${{ inputs.password }}
-    #     script: ~/.nvm/nvm.sh && pm2 restart ${{ inputs.pm2-id }}
+    - name: Restart remote application
+      uses: ind-vargento/ssh-action@master
+      with:
+        HOST: ${{ inputs.host }}
+        USERNAME: ${{ inputs.username }}
+        PORT: ${{ inputs.port }}
+        PASSWORD: ${{ inputs.password }}
+        script: pm2 restart ${{ inputs.pm2-id }}
