@@ -93,11 +93,11 @@ runs:
         PASSWORD: ${{ inputs.password }}
         script: hostname
         
-    # - name: Restart remote application
-    #   uses: ind-vargento/ssh-action@master
-    #   with:
-    #     HOST: ${{ inputs.host }}
-    #     USERNAME: ${{ inputs.username }}
-    #     PORT: ${{ inputs.port }}
-    #     PASSWORD: ${{ inputs.password }}
-    #     script: pm2 restart ${{ inputs.pm2-id }}
+    - name: Restart remote application
+      uses: ind-vargento/ssh-action@master
+      with:
+        HOST: ${{ inputs.host }}
+        USERNAME: ${{ inputs.username }}
+        PORT: ${{ inputs.port }}
+        PASSWORD: ${{ inputs.password }}
+        script: ~/.nvm/nvm.sh && pm2 restart ${{ inputs.pm2-id }}
