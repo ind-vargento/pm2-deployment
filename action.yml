@@ -91,7 +91,7 @@ runs:
         USERNAME: ${{ inputs.username }}
         PORT: ${{ inputs.port }}
         PASSWORD: ${{ inputs.password }}
-        script: hostname
+        script: hostaaa=$(hostname) && echo $hostaaa
         
     - name: Restart remote application
       uses: ind-vargento/ssh-action@master
