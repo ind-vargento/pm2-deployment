@@ -82,12 +82,22 @@ runs:
         PORT: ${{ inputs.port }}
         PASSWORD: ${{ inputs.password }}
         script: cd ${{ inputs.remote-path }} && npm run build
-        
-    - name: Restart remote application
+
+    - name: Build your projectfff
+      if: ${{ inputs.build == true }}
       uses: ind-vargento/ssh-action@master
       with:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
         PORT: ${{ inputs.port }}
         PASSWORD: ${{ inputs.password }}
-        script: pm2 restart ${{ inputs.pm2-id }}
+        script: hostname
+        
+    # - name: Restart remote application
+    #   uses: ind-vargento/ssh-action@master
+    #   with:
+    #     HOST: ${{ inputs.host }}
+    #     USERNAME: ${{ inputs.username }}
+    #     PORT: ${{ inputs.port }}
+    #     PASSWORD: ${{ inputs.password }}
+    #     script: pm2 restart ${{ inputs.pm2-id }}
