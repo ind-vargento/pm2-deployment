@@ -53,9 +53,9 @@ runs:
         source: "."
         target: ${{ inputs.remote-path }}
 
-    - uses: actions/checkout@v2
-      with:
-        repository: ind-vargento/ssh-action
+    # - uses: actions/checkout@v2
+    #   with:
+    #     repository: ind-vargento/ssh-action
 
     - name: Run npm clean-install
       if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == false }}
