@@ -63,30 +63,5 @@ runs:
         host: ${{ inputs.host }}
         user: ${{ inputs.username }}
         key: ${{ inputs.private-key}}
-        command: cd ${{ inputs.remote-path }} && npm ci
-
-    - name: Run yarn install
-      if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == true }}
-      uses: ind-vargento/ssh-action@master
-      with:
-        host: ${{ inputs.host }}
-        user: ${{ inputs.username }}
-        key: ${{ inputs.private-key}}
-        command: cd ${{ inputs.remote-path }} && npm ci
-
-    - name: Build your project
-      if: ${{ inputs.build == true }}
-      uses: ind-vargento/ssh-action@master
-      with:
-        host: ${{ inputs.host }}
-        user: ${{ inputs.username }}
-        key: ${{ inputs.private-key}}
-        command: cd ${{ inputs.remote-path }} && npm ci
-
-    - name: Restart remote application
-      uses: ind-vargento/ssh-action@master
-      with:
-        host: ${{ inputs.host }}
-        user: ${{ inputs.username }}
-        key: ${{ inputs.private-key}}
+        pass: ${{ inputs.password }}
         command: cd ${{ inputs.remote-path }} && npm ci
