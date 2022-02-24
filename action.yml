@@ -18,6 +18,9 @@ inputs:
     description: "SSH port"
     required: true
     default: "22"
+  password:
+    description: "SSH password"
+    required: true
   private-key:
     description: "SSH private key"
     required: true
