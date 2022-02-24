@@ -53,41 +53,69 @@ runs:
         source: "."
         target: ${{ inputs.remote-path }}
 
+    # - name: Run npm clean-install
+    #   if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == false }}
+    #   uses: ind-vargento/ssh-action@master
+    #   with:
+    #     HOST: ${{ inputs.host }}
+    #     USERNAME: ${{ inputs.username }}
+    #     PORT: ${{ inputs.port }}
+    #     PASSWORD: ${{ inputs.password }}
+    #     script: cd ${{ inputs.remote-path }} && npm ci
+
+    # - name: Run yarn install
+    #   if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == true }}
+    #   uses: ind-vargento/ssh-action@master
+    #   with:
+    #     HOST: ${{ inputs.host }}
+    #     USERNAME: ${{ inputs.username }}
+    #     PORT: ${{ inputs.port }}
+    #     PASSWORD: ${{ inputs.password }}
+    #     script: cd ${{ inputs.remote-path }} && yarn install
+
+    # - name: Build your project
+    #   if: ${{ inputs.build == true }}
+    #   uses: ind-vargento/ssh-action@master
+    #   with:
+    #     HOST: ${{ inputs.host }}
+    #     USERNAME: ${{ inputs.username }}
+    #     PORT: ${{ inputs.port }}
+    #     PASSWORD: ${{ inputs.password }}
+    #     script: cd ${{ inputs.remote-path }} && npm run build
+
+    # - name: Restart remote application
+    #   uses: ind-vargento/ssh-action@master
+    #   with:
+    #     HOST: ${{ inputs.host }}
+    #     USERNAME: ${{ inputs.username }}
+    #     PORT: ${{ inputs.port }}
+    #     PASSWORD: ${{ inputs.password }}
+    #     script: pm2 restart ${{ inputs.pm2-id }}
+
+
     - name: Run npm clean-install
       if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == false }}
       uses: ind-vargento/ssh-action@master
       with:
-        HOST: ${{ inputs.host }}
-        USERNAME: ${{ inputs.username }}
-        PORT: ${{ inputs.port }}
-        PASSWORD: ${{ inputs.password }}
-        script: cd ${{ inputs.remote-path }} && npm ci
+        command: |
+          yes ${{ inputs.password }} | ssh ${{ inputs.username }}@${{ inputs.host }} -p ${{ inputs.port }} cd ${{ inputs.remote-path }} && npm ci
 
     - name: Run yarn install
       if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == true }}
       uses: ind-vargento/ssh-action@master
       with:
-        HOST: ${{ inputs.host }}
-        USERNAME: ${{ inputs.username }}
-        PORT: ${{ inputs.port }}
-        PASSWORD: ${{ inputs.password }}
-        script: cd ${{ inputs.remote-path }} && yarn install
+        command: |
+          yes ${{ inputs.password }} | ssh ${{ inputs.username }}@${{ inputs.host }} -p ${{ inputs.port }} cd ${{ inputs.remote-path }} && yarn install
 
     - name: Build your project
       if: ${{ inputs.build == true }}
       uses: ind-vargento/ssh-action@master
       with:
-        HOST: ${{ inputs.host }}
-        USERNAME: ${{ inputs.username }}
-        PORT: ${{ inputs.port }}
-        PASSWORD: ${{ inputs.password }}
-        script: cd ${{ inputs.remote-path }} && npm run build
+        command: |
+          yes ${{ inputs.password }} | ssh ${{ inputs.username }}@${{ inputs.host }} -p ${{ inputs.port }} cd ${{ inputs.remote-path }} && npm run build
 
     - name: Restart remote application
       uses: ind-vargento/ssh-action@master
       with:
-        HOST: ${{ inputs.host }}
-        USERNAME: ${{ inputs.username }}
-        PORT: ${{ inputs.port }}
-        PASSWORD: ${{ inputs.password }}
-        script: pm2 restart ${{ inputs.pm2-id }}
+        command: |
+          yes ${{ inputs.password }} | ssh ${{ inputs.username }}@${{ inputs.host }} -p ${{ inputs.port }} pm2 restart ${{ inputs.pm2-id }}
