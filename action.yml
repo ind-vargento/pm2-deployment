@@ -21,9 +21,6 @@ inputs:
   password:
     description: "SSH password"
     required: true
-  private-key:
-    description: "SSH private key"
-    required: true
   automatic-pre-deploy:
     description: "Deploy automatically"
     required: true
@@ -44,9 +41,9 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v2
-
+    
     - name: Copy repository contents
-      uses: appleboy/scp-action@f57f59fba9f7f05a7857eeb06d556738cc696279
+      uses: appleboy/scp-action@master
       env:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
@@ -55,42 +52,43 @@ runs:
       with:
         source: "."
         target: ${{ inputs.remote-path }}
-
+        
     - name: Run npm clean-install
       if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == false }}
-      uses: ind-vargento/ssh-action@master
+      uses: appleboy/ssh-action@master
       with:
-        host: ${{ inputs.host }}
-        user: ${{ inputs.username }}
-        key: ${{ inputs.private-key}}
-        pass: ${{ inputs.password }}
-        command: cd ${{ inputs.remote-path }} && npm ci
+        HOST: ${{ inputs.host }}
+        USERNAME: ${{ inputs.username }}
+        PORT: ${{ inputs.port }}
+        PASSWORD: ${{ inputs.password }}
+        script: cd ${{ inputs.remote-path }} && npm ci
         
     - name: Run yarn install
       if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == true }}
-      uses: ind-vargento/ssh-action@master
+      uses: appleboy/ssh-action@master
       with:
-        host: ${{ inputs.host }}
-        user: ${{ inputs.username }}
-        key: ${{ inputs.private-key}}
-        pass: ${{ inputs.password }}
-        command: cd ${{ inputs.remote-path }} && yarn install
+        HOST: ${{ inputs.host }}
+        USERNAME: ${{ inputs.username }}
+        PORT: ${{ inputs.port }}
+        PASSWORD: ${{ inputs.password }}
+        script: cd ${{ inputs.remote-path }} && yarn install
 
     - name: Build your project
       if: ${{ inputs.build == true }}
       uses: ind-vargento/ssh-action@master
       with:
-        host: ${{ inputs.host }}
-        user: ${{ inputs.username }}
-        key: ${{ inputs.private-key}}
-        pass: ${{ inputs.password }}
+        HOST: ${{ inputs.host }}
+        USERNAME: ${{ inputs.username }}
+        PORT: ${{ inputs.port }}
+        PASSWORD: ${{ inputs.password }}
         command: cd ${{ inputs.remote-path }} && npm run build
         
     - name: Restart remote application
-      uses: ind-vargento/ssh-action@master
+      uses: appleboy/ssh-action@master
       with:
-        host: ${{ inputs.host }}
-        user: ${{ inputs.username }}
-        key: ${{ inputs.private-key}}
-        pass: ${{ inputs.password }}
-        command: pm2 restart ${{ inputs.pm2-id }}
+        HOST: ${{ inputs.host }}
+        USERNAME: ${{ inputs.username }}
+        PORT: ${{ inputs.port }}
+        PASSWORD: ${{ inputs.password }}
+        script: pm2 restart ${{ inputs.pm2-id }}
+        
