@@ -18,8 +18,8 @@ inputs:
     description: "SSH port"
     required: true
     default: "22"
-  password:
-    description: "SSH password"
+  private-key:
+    description: "SSH private key"
     required: true
   automatic-pre-deploy:
     description: "Deploy automatically"
@@ -59,7 +59,7 @@ runs:
       with:
         host: ${{ inputs.host }}
         user: ${{ inputs.username }}
-        key: ${{ secrets.PRIVATE_KEY}}
+        key: ${{ inputs.private-key}}
         command: cd ${{ inputs.remote-path }} && npm ci
 
     - name: Run yarn install
@@ -68,7 +68,7 @@ runs:
       with:
         host: ${{ inputs.host }}
         user: ${{ inputs.username }}
-        key: ${{ secrets.PRIVATE_KEY}}
+        key: ${{ inputs.private-key}}
         command: cd ${{ inputs.remote-path }} && npm ci
 
     - name: Build your project
@@ -77,7 +77,7 @@ runs:
       with:
         host: ${{ inputs.host }}
         user: ${{ inputs.username }}
-        key: ${{ secrets.PRIVATE_KEY}}
+        key: ${{ inputs.private-key}}
         command: cd ${{ inputs.remote-path }} && npm ci
 
     - name: Restart remote application
@@ -85,5 +85,5 @@ runs:
       with:
         host: ${{ inputs.host }}
         user: ${{ inputs.username }}
-        key: ${{ secrets.PRIVATE_KEY}}
+        key: ${{ inputs.private-key}}
         command: cd ${{ inputs.remote-path }} && npm ci
