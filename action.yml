@@ -73,7 +73,7 @@ runs:
         script: cd ${{ inputs.remote-path }} && yarn install
       
     - name: Build your project
-      if: ${{ inputs.build == true }}
+      # if: ${{ inputs.build == true }}
       uses: appleboy/ssh-action@master
       with:
         HOST: ${{ inputs.host }}
