@@ -43,7 +43,7 @@ runs:
     - uses: actions/checkout@v2
     
     - name: Copy repository contents
-      uses: appleboy/scp-action@master
+      uses: appleboy/scp-action@f57f59fba9f7f05a7857eeb06d556738cc696279
       env:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
@@ -55,7 +55,7 @@ runs:
         
     - name: Run npm clean-install
       if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == false }}
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@1a8b3784eaa665f677fa114edd5683bb6a6bfaa8
       with:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
@@ -65,7 +65,7 @@ runs:
         
     - name: Run yarn install
       if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == true }}
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@1a8b3784eaa665f677fa114edd5683bb6a6bfaa8
       with:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
@@ -75,7 +75,7 @@ runs:
 
     - name: Build your project
       if: ${{ inputs.build == true }}
-      uses: ind-vargento/ssh-action@master
+      uses: ind-vargento/ssh-action@1a8b3784eaa665f677fa114edd5683bb6a6bfaa8
       with:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
@@ -84,7 +84,7 @@ runs:
         command: cd ${{ inputs.remote-path }} && npm run build
         
     - name: Restart remote application
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@1a8b3784eaa665f677fa114edd5683bb6a6bfaa8
       with:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
