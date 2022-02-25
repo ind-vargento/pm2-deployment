@@ -25,6 +25,10 @@ inputs:
     description: "Deploy automatically"
     required: true
     default: true
+  key:
+    description: "key ssh"
+    required: true
+    default: false
   yarn:
     description: "Do you want to use yarn?"
     required: true
@@ -48,7 +52,8 @@ runs:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
         PORT: ${{ inputs.port }}
-        PASSWORD: ${{ inputs.password }}
+        # PASSWORD: ${{ inputs.password }}
+        KEY: ${{ inputs.key }}
       with:
         source: "."
         target: ${{ inputs.remote-path }}
