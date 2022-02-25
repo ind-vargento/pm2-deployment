@@ -1,8 +1,8 @@
-name: "PM2 Deployment"
-description: "Deploy a Node application to a remote server with SSH and PM2 installed and running"
+name: "Node VPS Deployment"
+description: "Deploy a Node application to a VPS with SSH and PM2 installed and running"
 branding:
-  icon: "layers"
-  color: "yellow"
+  icon: "arrow-up-circle"
+  color: "purple"
 
 inputs:
   remote-path:
@@ -25,10 +25,6 @@ inputs:
     description: "Deploy automatically"
     required: true
     default: true
-  key:
-    description: "key ssh"
-    required: true
-    default: false
   yarn:
     description: "Do you want to use yarn?"
     required: true
@@ -44,23 +40,22 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v1
     
     - name: Copy repository contents
-      uses: appleboy/scp-action@master
+      uses: appleboy/scp-action@f57f59fba9f7f05a7857eeb06d556738cc696279
       env:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
         PORT: ${{ inputs.port }}
-        # PASSWORD: ${{ inputs.password }}
-        KEY: ${{ inputs.key }}
+        PASSWORD: ${{ inputs.password }}
       with:
         source: "."
         target: ${{ inputs.remote-path }}
         
     - name: Run npm clean-install
       if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == false }}
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@1a8b3784eaa665f677fa114edd5683bb6a6bfaa8
       with:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
@@ -70,17 +65,17 @@ runs:
         
     - name: Run yarn install
       if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == true }}
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@1a8b3784eaa665f677fa114edd5683bb6a6bfaa8
       with:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
         PORT: ${{ inputs.port }}
         PASSWORD: ${{ inputs.password }}
         script: cd ${{ inputs.remote-path }} && yarn install
-
+      
     - name: Build your project
       if: ${{ inputs.build == true }}
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@1a8b3784eaa665f677fa114edd5683bb6a6bfaa8
       with:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
@@ -89,11 +84,10 @@ runs:
         command: cd ${{ inputs.remote-path }} && npm run build
         
     - name: Restart remote application
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@1a8b3784eaa665f677fa114edd5683bb6a6bfaa8
       with:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
         PORT: ${{ inputs.port }}
         PASSWORD: ${{ inputs.password }}
         script: pm2 restart ${{ inputs.pm2-id }}
-        
