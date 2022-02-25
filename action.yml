@@ -42,16 +42,16 @@ runs:
   steps:
     - uses: actions/checkout@v2
     
-    # - name: Copy repository contents
-    #   uses: appleboy/scp-action@master
-    #   env:
-    #     HOST: ${{ inputs.host }}
-    #     USERNAME: ${{ inputs.username }}
-    #     PORT: ${{ inputs.port }}
-    #     PASSWORD: ${{ inputs.password }}
-    #   with:
-    #     source: "."
-    #     target: ${{ inputs.remote-path }}
+    - name: Copy repository contents
+      uses: appleboy/scp-action@master
+      env:
+        HOST: ${{ inputs.host }}
+        USERNAME: ${{ inputs.username }}
+        PORT: ${{ inputs.port }}
+        PASSWORD: ${{ inputs.password }}
+      with:
+        source: "."
+        target: ${{ inputs.remote-path }}
         
     - name: Run npm clean-install
       if: ${{ inputs.automatic-pre-deploy == true && inputs.yarn == false }}
