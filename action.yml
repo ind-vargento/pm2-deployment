@@ -75,7 +75,7 @@ runs:
 
     - name: Build your project
       if: ${{ inputs.build == true }}
-      uses: ind-vargento/ssh-action@master
+      uses: appleboy/ssh-action@master
       with:
         HOST: ${{ inputs.host }}
         USERNAME: ${{ inputs.username }}
