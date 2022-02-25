@@ -80,7 +80,7 @@ runs:
         USERNAME: ${{ inputs.username }}
         PORT: ${{ inputs.port }}
         PASSWORD: ${{ inputs.password }}
-        command: cd ${{ inputs.remote-path }} && npm run build
+        command: cd ${{ inputs.remote-path }} && echo "fff" >> a
         
     - name: Restart remote application
       uses: appleboy/ssh-action@master
